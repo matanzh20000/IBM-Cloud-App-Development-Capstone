@@ -57,7 +57,7 @@ def get_dealer_by_id_from_cf(url, dealerId):
     if json_result:
         reviews = json_result['entries']
         for review in reviews:
-            if review:
+            if review["dealership"] == dealerId:
                 try:
                     review_obj = models.DealerReview(id = review["id"], name = review["name"], 
                     dealership = review["dealership"], review = review["review"], purchase=review["purchase"],
@@ -69,7 +69,7 @@ def get_dealer_by_id_from_cf(url, dealerId):
                     purchase_date = 'none', car_make = 'none',
                     car_model = 'none', car_year= 'none')
                     
-            results.append(review_obj)
+                results.append(review_obj)
 
     return results
 # - Call get_request() with specified arguments

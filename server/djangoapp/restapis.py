@@ -62,6 +62,7 @@ def get_dealer_by_id_from_cf(url, dealerId):
                 dealership = review["dealership"], review = review["review"], purchase=review["purchase"],
                 purchase_date = review["purchase_date"], car_make = review["car_make"], car_model = review["car_model"],
                 car_year= review["car_year"])
+            results.append(review_obj)
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
 

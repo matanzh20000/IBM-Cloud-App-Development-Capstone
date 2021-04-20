@@ -104,8 +104,12 @@ def get_dealerships(request):
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+def get_dealer_details(request, dealer_id):
+    if request.method == "GET":
+        url = 'https://5b93346d.us-south.apigw.appdomain.cloud/reviews/get-review'
+        reviews = restapis.get_dealer_by_id_from_cf(url, dealer_id)
+        reviews = ' '.join([review.review for review in reviews])
+        return HttpResponse(reviews)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):

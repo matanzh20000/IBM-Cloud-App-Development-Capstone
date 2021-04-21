@@ -45,7 +45,22 @@
             </div>
         </nav>
     <!--Add a nav bar here -->
-
+     <table class="table" id="table" data-filter-control="true">
+        <thead>
+            <tr>
+                <th data-field="id">ID</th>
+                ...
+            </tr>
+        </thead>
+        <tbody>
+            {% for dealer in dealership_list %}
+                <tr>
+                    <td>{{dealer.id}}</td>
+                    ...
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <!--Add a dealer table here -->
 
     </body>

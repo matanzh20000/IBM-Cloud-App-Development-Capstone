@@ -27,11 +27,9 @@ def get_request(url, api_key, **kwargs):
                                 params=kwargs)
 
     if response != None:
-        print(response)
         status_code = response.status_code
         print("With status {} ".format(status_code))
         json_data = json.loads(response.text)
-        print(json_data)
         return json_data
 
 # Create a `post_request` to make HTTP POST requests

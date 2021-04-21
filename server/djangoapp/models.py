@@ -27,7 +27,6 @@ class CarModel(models.Model):
 
     def __str__(self):
         return 'Name ' + self.name
-
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 
 class CarDealer:
@@ -51,6 +50,7 @@ class CarDealer:
         self.st = st
         # Dealer zip
         self.zip = zip
+        self.idx = 0
 
     def __str__(self):
         return "Dealer name: " + self.full_name

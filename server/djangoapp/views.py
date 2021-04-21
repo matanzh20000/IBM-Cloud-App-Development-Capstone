@@ -93,14 +93,17 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
+    context = {}
     if request.method == "GET":
         url = 'https://5b93346d.us-south.apigw.appdomain.cloud/dealerships/dealer-get'
         # Get dealers from the URL
         dealerships = restapis.get_dealers_from_cf(url)
+        for dealer in dealerships:
+            context.append(dealer)
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer

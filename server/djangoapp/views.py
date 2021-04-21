@@ -112,6 +112,19 @@ def get_dealer_details(request, dealer_id):
         return HttpResponse(reviews)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
-
+def add_review(request, dealer_id):
+    if request.method == "POST":
+        if request.user.is_authenticated():
+            reveiw = {}
+            json_payload = {}
+            review["name"] = "Saphilous"
+            review["dealership"] = 23
+            review["review"] = 'Excellent prices and great service'
+            review["purchase"] = True
+            review["purchase_date"] = '23/05/2020'
+            review["car_make"] = 'Audi'
+            review["car_model"] = 'X7'
+            reveiw["car_year"] = '2020'
+            json_payload["review"] = reveiw
+            url = "https://5b93346d.us-south.apigw.appdomain.cloud/dealerships/reviews/review-post"
+            

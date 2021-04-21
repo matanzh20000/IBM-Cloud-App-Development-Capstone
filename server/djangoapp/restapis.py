@@ -35,6 +35,15 @@ def get_request(url, api_key, **kwargs):
         return json_data
 
 # Create a `post_request` to make HTTP POST requests
+def post_request(url, json_payload, **kwargs):
+    response = None
+    try:
+        response = requests.post(url, params=kwargs, json=json_payload)
+    except:
+        print("Something went wrong")
+    
+    if response != None:
+        print (response)
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 
 
@@ -112,8 +121,6 @@ def analyze_review_sentiments(text):
     sentimentresult = sentiment_label + " with a score of " + sentiment_score
     
     return sentimentresult
-# - Call get_request() with specified arguments
-# - Get the returned sentiment label such as Positive or Negative
 
 
 

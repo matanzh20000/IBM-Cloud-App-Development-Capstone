@@ -112,7 +112,7 @@ def get_dealer_details(request, dealer_id):
         return HttpResponse(reviews)
 
 # Create a `add_review` view to submit a review
-def add_review(request, dealer_id):
+def add_review(request):
     if request.method == "POST":
         if request.user.is_authenticated():
             reveiw = {}
@@ -127,4 +127,9 @@ def add_review(request, dealer_id):
             reveiw["car_year"] = '2020'
             json_payload["review"] = reveiw
             url = "https://5b93346d.us-south.apigw.appdomain.cloud/dealerships/reviews/review-post"
+            response = restapis.post_request(url, json_payload)
+            message = 'Everything is aweomse'
+            return HttpResponse(message)
+        else:
+            return redirect("/djangoapp/login")
             

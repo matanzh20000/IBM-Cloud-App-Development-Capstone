@@ -36,13 +36,13 @@ def get_request(url, api_key, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 def post_request(url, json_payload, **kwargs):
+    print(json_payload)
+    print(kwargs)
     try:
-        response = requests.post(url, params=kwargs, json=json_payload)
+        response = requests.post(url, json=json_payload, params=kwargs)
     except:
         print("Something went wrong")
     print (response)
-    statuscode = response.status_code
-    print(statuscode)
     return response
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 

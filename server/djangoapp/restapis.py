@@ -116,7 +116,7 @@ def analyze_review_sentiments(text):
     sentiment_label = response["sentiment"]["document"]["label"]
     print(sentiment_score)
     print(sentiment_label)
-    sentimentresult = sentiment_label + " with a score of " + sentiment_score
+    sentimentresult = sentiment_label
     
     return sentimentresult
 

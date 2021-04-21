@@ -12,26 +12,19 @@ logger = logging.getLogger(__name__)
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
-def get_request(url, api_key, **kwargs):
+def get_request(url, **kwargs):
+    print(kwargs)
     print("GET from {} ".format(url))
-    response = None
-    print(api_key)
-    if api_key != None:
-        params = dict()
-        params["text"] = kwargs["text"]
-        params["version"] = kwargs["version"]
-        params["features"] = kwargs["features"]
-        response = requests.get(url, params=params, headers={'Content-Type': 'application/json'}, auth=HTTPBasicAuth('apikey', api_key))
-    else:
-        response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                params=kwargs)
-
-    if response != None:
-        status_code = response.status_code
-        print("With status {} ".format(status_code))
-        json_data = json.loads(response.text)
-        return json_data
-
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.get(url, headers={'Content-Type': 'application/json'}, params=kwargs)
+    except:
+        # If any error occurs
+        print("Network exception occurred")
+    status_code = response.status_code
+    print("With status {} ".format(status_code))
+    json_data = json.loads(response.text)
+    return json_data
 # Create a `post_request` to make HTTP POST requests
 def post_request(url, json_payload, **kwargs):
     json_obj = json_payload["review"]
@@ -49,7 +42,7 @@ def post_request(url, json_payload, **kwargs):
 def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(url, None)
+    json_result = get_request(url)
     if json_result:
         # Get the row list in JSON as dealers
         dealers = json_result['entries']
@@ -69,26 +62,25 @@ def get_dealers_from_cf(url, **kwargs):
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_by_id_from_cf(url, dealerId):
     results = []
-    json_result = get_request(url, None, dealerId=dealerId)
+    json_result = get_request(url, dealerId=dealerId)
     if json_result:
         reviews = json_result['entries']
         for review in reviews:
-            if review["dealership"] == dealerId:
-                try:
-                    review_obj = models.DealerReview(id = review["id"], name = review["name"], 
-                    dealership = review["dealership"], review = review["review"], purchase=review["purchase"],
-                    purchase_date = review["purchase_date"], car_make = review['car_make'],
-                    car_model = review['car_model'], car_year= review['car_year'], sentiment= "none")
-                except:
-                    review_obj = models.DealerReview(id = review["id"], name = review["name"], 
-                    dealership = review["dealership"], review = review["review"], purchase=review["purchase"],
-                    purchase_date = 'none', car_make = 'none',
-                    car_model = 'none', car_year= 'none', sentiment= "none")
+            try:
+                review_obj = models.DealerReview(id = review["id"], name = review["name"], 
+                dealership = review["dealership"], review = review["review"], purchase=review["purchase"],
+                purchase_date = review["purchase_date"], car_make = review['car_make'],
+                car_model = review['car_model'], car_year= review['car_year'], sentiment= "none")
+            except:
+                review_obj = models.DealerReview(id = review["id"], name = review["name"], 
+                dealership = review["dealership"], review = review["review"], purchase=review["purchase"],
+                purchase_date = 'none', car_make = 'none',
+                car_model = 'none', car_year= 'none', sentiment= "none")
                 
-                review_obj.sentiment = analyze_review_sentiments(review_obj.review)
-                print(review_obj.sentiment)
+            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
+            print(review_obj.sentiment)
                     
-                results.append(review_obj)
+            results.append(review_obj)
 
     return results
 # - Call get_request() with specified arguments
